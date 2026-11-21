@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACCORA Marketplace</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#0b1120;color:#fff}
+header{background:#111b2e;padding:17px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-bottom:1px solid #334155}
+.logo{font-size:27px;font-weight:bold;color:#ff4747;letter-spacing:2px}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+button{cursor:pointer;border:0;border-radius:7px;padding:11px 15px;font-weight:bold}
+.buyer{background:#e63946;color:white}
+.seller{background:#18a999;color:white}
+.container{max-width:1100px;margin:auto;padding:20px}
+.hero{background:linear-gradient(135deg,#17243b,#243957);padding:40px 20px;border-radius:15px;text-align:center;margin:15px 0 25px}
+.hero h1{font-size:34px;margin:0 0 12px}
+.hero p{color:#cbd5e1;line-height:1.6}
+.search{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+input,select,textarea{padding:13px;border:1px solid #334155;border-radius:8px;background:#111b2e;color:white;width:100%;font-size:15px}
+.search input,.search select{flex:1;min-width:150px}
+.section-title{margin-top:30px}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:17px}
+.card{background:#152137;padding:18px;border-radius:12px;border:1px solid #263750}
+.card h3{margin:12px 0}
+.card p{color:#bdc9da;line-height:1.5}
+.price{color:#36d399;font-size:20px;font-weight:bold}
+.tag{display:inline-block;background:#24344d;padding:6px 10px;border-radius:20px;color:#b9c9df;font-size:12px}
+.card button{width:100%;background:#e63946;color:white;margin-top:12px}
+.action{background:#18a999;color:white;margin:10px 0}
+.panel{background:#142037;padding:20px;border:1px solid #334155;border-radius:12px;margin:25px 0}
+.panel input,.panel select,.panel textarea{margin:7px 0}
+footer{text-align:center;padding:25px;color:#94a3b8}
+.contact{background:#111b2e;padding:25px;margin:20px 0;border-radius:15px;border:1px solid #27344b;text-align:center}
+.contact h2{color:#ff4747}
+.contact p{line-height:1.8}
+.contact a{color:#60a5fa;text-decoration:none}
+.modal{display:none;position:fixed;inset:0;background:#000c;justify-content:center;align-items:center;padding:15px;z-index:10}
+.modalbox{width:100%;max-width:420px;background:#142037;padding:22px;border-radius:14px;max-height:90vh;overflow:auto}
+.modalbox input{margin:8px 0}
+.modalbox button{width:100%;margin-top:10px;background:#18a999;color:white}
+.modalbox .close{background:#475569}
+.note{font-size:12px;color:#94a3b8;line-height:1.6}
+@media(max-width:500px){.hero h1{font-size:27px}header{justify-content:center}.logo{width:100%;text-align:center}}
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">ACCORA</div>
+<nav>
+<button class="buyer" onclick="openForm('Buyer')">Buyer Register</button>
+<button class="seller" onclick="openForm('Seller')">Seller Register</button>
+</nav>
+</header>
+
+<main class="container">
+<section class="hero">
+<h1>ACCORA Marketplace</h1>
+<p>Discover Digital Products, Websites, Domains and Business Services.</p>
+<p>A marketplace connecting buyers and sellers worldwide.</p>
+<button class="action" onclick="document.getElementById('listing').scrollIntoView({behavior:'smooth'})">Explore Marketplace</button>
+</section>
+
+<h2 class="section-title">Explore Products</h2>
+<div class="search">
+<input id="search" placeholder="Search products..." oninput="render()">
+<select id="category" onchange="render()">
+<option value="">All Categories</option>
+<option>Websites</option>
+<option>Domains</option>
+<option>Gaming Assets</option>
+<option>Digital Businesses</option>
+<option>Verification Services</option>
+</select>
+</div>
+
+<div id="products" class="products"></div>
+
+<section class="panel" id="listing">
+<h2>Seller – Add New Listing</h2>
+<p class="note">Demo form: listing will appear only in this browser session. Real shared listings require a secure backend.</p>
+<input id="pname" placeholder="Product / Service Name">
+<select id="pcategory">
+<option>Websites</option>
+<option>Domains</option>
+<option>Gaming Assets</option>
+<option>Digital Businesses</option>
+<option>Verification Services</option>
+</select>
+<input id="pprice" placeholder="Price (e.g. $100)">
+<textarea id="pdescription" placeholder="Product Description"></textarea>
+<button class="action" onclick="addProduct()">Add Product</button>
+</section>
+
+<section class="contact">
+<h2>Founder & Contact</h2>
+<h3>Niaz Morshed</h3>
+<p>Founder — ACCORA Marketplace</p>
+<p>📧 Email:
+<a href="mailto:niazmorshef@gmail.com">niazmorshef@gmail.com</a></p>
+<p>📲 WhatsApp:
+<a href="https://wa.me/8801737836344">01737836344</a></p>
+<p>✈ Telegram:
+<a href="https://t.me/nmckyc">@nmckyc</a></p>
+<p>📍 Rangpur, Bangladesh</p>
+<hr style="border-color:#334155">
+<p class="note">Buyer & Seller Support · Digital Marketplace</p>
+</section>
+</main>
+
+<footer>ACCORA Marketplace © 2026 | All Rights Reserved</footer>
+
+<div class="modal" id="modal">
+<div class="modalbox">
+<h2 id="formtitle">Registration</h2>
+<form id="regform">
+<input id="role" type="hidden">
+<input id="fullname" placeholder="Full Name" required>
+<input id="email" type="email" placeholder="Email Address" required>
+<input id="country" placeholder="Country" required>
+<input id="password" type="password" placeholder="Password" required>
+<input id="confirm" type="password" placeholder="Confirm Password" required>
+<button type="submit">Create Account</button>
+<button type="button" class="close" onclick="closeForm()">Close</button>
+</form>
+<p class="note">Demo only. This form does not create a real account or store passwords. Secure authentication requires a backend.</p>
+</div>
+</div>
+
+<script>
+let products=[
+{name:"Premium Website",category:"Websites",price:"$250",description:"Ready-made website project"},
+{name:"Premium Domain",category:"Domains",price:"$120",description:"Premium domain listing"},
+{name:"Gaming Digital Asset",category:"Gaming Assets",price:"$50",description:"Digital gaming asset listing"},
+{name:"Online Business",category:"Digital Businesses",price:"$800",description:"Digital business opportunity"},
+{name:"Verification Support Service",category:"Verification Services",price:"Contact Seller",description:"Business verification support"},
+{name:"E-commerce Store",category:"Websites",price:"$500",description:"Online store website"}
+];
+
+function render(){
+const q=document.getElementById("search").value.toLowerCase();
+const c=document.getElementById("category").value;
+const filtered=products.filter(p=>
+p.name.toLowerCase().includes(q)&&(!c||p.category===c)
+);
+document.getElementById("products").innerHTML=filtered.map((p,i)=>`
+<div class="card">
+<span class="tag">${escapeHTML(p.category)}</span>
+<h3>${escapeHTML(p.name)}</h3>
+<p>${escapeHTML(p.description)}</p>
+<div class="price">${escapeHTML(p.price)}</div>
+<button onclick="contactSeller('${i}')">View Listing</button>
+</div>`).join("")||"<p>No products found.</p>";
+}
+
+function escapeHTML(s){
+return String(s).replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[c]));
+}
+
+function contactSeller(i){
+const p=products[i];
+alert("Listing: "+p.name+"\nFor enquiries, contact ACCORA Founder by email or WhatsApp.");
+}
+
+function addProduct(){
+const name=document.getElementById("pname").value.trim();
+const category=document.getElementById("pcategory").value;
+const price=document.getElementById("pprice").value.trim();
+const description=document.getElementById("pdescription").value.trim();
+if(!name||!price||!description){
+alert("Please fill in all listing fields.");
+return;
+}
+products.unshift({name,category,price,description});
+render();
+document.getElementById("pname").value="";
+document.getElementById("pprice").value="";
+document.getElementById("pdescription").value="";
+alert("Demo listing added in this browser session.");
+}
+
+function openForm(role){
+document.getElementById("modal").style.display="flex";
+document.getElementById("role").value=role;
+document.getElementById("formtitle").innerText=role+" Registration";
+}
+function closeForm(){
+document.getElementById("modal").style.display="none";
+}
+
+document.getElementById("regform").addEventListener("submit",function(e){
+e.preventDefault();
+const p=document.getElementById("password").value;
+const c=document.getElementById("confirm").value;
+if(p!==c){alert("Passwords do not match!");return;}
+alert("Registration demo only. No account was created. Real registration needs secure authentication.");
+this.reset();
+closeForm();
+});
+
+render();
+</script>
+</body>
+</html>
